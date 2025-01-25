@@ -1,0 +1,44 @@
+ #include<stdio.h>
+ int main()
+ {
+ int i,key,index,mid,beg,end,list[20],count;
+ printf("how many elements:");
+ scanf("%d",&count);
+ printf("enter the elements:");
+ for(i=0;i<count;i++)
+ {
+ scanf("%d",list+i);
+ }
+ printf("enter the element to be searched:");
+ scanf("%d",&key);
+ beg=0;
+ end=count;
+ while(beg<=end)
+ {
+ mid=(beg+end)/2;
+ if(*(list+mid)==key)
+ {
+ end=-10;
+ index = mid;
+ break;
+ }
+ if(*(list+mid)<key)
+ {
+ beg=mid+1;
+ }
+ else
+ {
+ end=mid-1;
+ }
+ }
+ if(end==-10)
+ {
+ printf("the element %d is found at index: %d\n
+ ",key,index);
+ }
+ else
+ {
+ printf("the element is not found\n");
+ }
+ return 0;
+ }
