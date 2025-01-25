@@ -1,0 +1,116 @@
+ #include<stdio.h>
+ #include<math.h>
+ #include<ctype.h>
+ int size=10;
+ char postfix[10];
+ float stack[10];
+ char expr[10];
+ int top=-1;
+ void push(char a)
+ {
+ stack[++top]=a;
+ }
+ char pop()
+ {
+ return stack[top--];
+ }
+ int precedence(char a)
+ {
+ switch(a)
+ {
+ case('+'):
+ case('-'):
+ return 1;
+ case('*'):
+ case('/'):
+ return 3;
+ case('^'):
+ return 6;
+ }
+ return 0;
+ }
+ void infix_to_postfix()
+ {
+ char c;
+ int i=0,k=0;
+ while(expr[i])
+ {
+ if(isalnum(expr[i]))
+ {
+ postfix[k++]=expr[i];
+ }
+ else if(expr[i]=='(')
+{
+ push(expr[i]);
+ }
+ else if(expr[i]==')')
+ {
+ while((c=pop())!='(')
+ {
+ postfix[k++]=c;
+ }
+ }
+ else if(expr[i]=='^')
+ push(expr[i]);
+ else
+ {
+ while(top!=-1&&precedence(stack[top])>=precedence(expr[i]))
+ {
+ postfix[k++]=pop();
+ }
+ push(expr[i]);
+ }
+ i++;
+ }
+ while(top!=-1)
+ {
+ postfix[k++]=pop();
+ }
+ postfix[k]='\0';
+ }
+ float evaluate()
+ {
+ int i=0;
+ float a,b;
+ while(postfix[i])
+ {
+ if(isdigit(postfix[i]))
+ {
+ stack[++top]=postfix[i]-'0';
+ }
+ else
+ {
+ b=stack[top--];
+ a=stack[top--];
+ switch(postfix[i])
+ {
+ case '+':
+ stack[++top]=a+b;
+break;
+ case '-':
+ stack[++top]=a-b;
+ break;
+ case '*':
+ stack[++top]=a*b;
+ break;
+ case '/':
+ stack[++top]=a/b;
+ break;
+ case '^':
+ stack[++top]=pow(a, b);
+ break;
+ }
+ }
+ i++;
+ }
+ return stack[top];
+ }
+ int main()
+ {
+ printf("enter expression:");
+ scanf("%s",expr);
+ infix_to_postfix();
+ printf("postfix: %s\n",postfix);
+ printf("result: %f\n",evaluate());
+ return 0;
+ }
