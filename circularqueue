@@ -1,0 +1,70 @@
+ #include<stdio.h>
+ int arr[10];
+ int size = 3;
+ int front =-1;
+ int rear=-1;
+ int item;
+ void enqueue(int* q,int size,int item)
+ {
+ if(front==(rear+1)%size)
+ printf("\nQueue overflow!");
+ else
+ {
+ printf("\nEnter the element! ");
+ scanf("%d",&item);
+ rear = (rear+1)%size;
+ q[rear]= item;
+ if(rear == 0)
+ front=0;
+ }
+ }
+ int dequeue(int* q,int size,int item)
+ {
+ if(front==-1){
+ printf("\nQueue is empty!");
+ return 0;}
+ else
+ {
+ item = q[front];
+ front = (front+1)%size;
+ if(front==(rear+1)%size)
+ {
+ front =-1;
+ rear =-1;
+ }
+ return item;
+ }
+ }
+void display(int* q)
+ {
+ if(front ==-1)
+ printf("\nQueue is empty! ");
+ else
+ {
+ for(int i=front;i<=rear;i++)
+ {
+ printf("%d ",q[i]);
+ }
+ }
+ }
+ void main()
+ {
+ int ch=0;
+ while(ch!=4)
+ {
+ printf("\n\n1.Display\n2.Enqueue\n3.Dequeue\n4.Exit");
+ scanf("%d",&ch);
+ if(ch==1)
+ display(arr);
+ else if(ch==2)
+ enqueue(arr, size, item);
+ else if(ch==3){
+ printf("\nPopped:
+ %d",dequeue(arr,size,item));
+ }
+ else if (ch==4)
+ break;
+ else
+ printf("\nInvalid input");
+ }
+ }
