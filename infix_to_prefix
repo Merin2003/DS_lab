@@ -1,0 +1,113 @@
+#include<stdio.h>
+ #include<math.h>
+ #include<ctype.h>
+ #include<string.h>
+ int size=100;
+ char expr1[100];
+ char postfix[100];
+ char prefix[100];
+ float stack[100];
+ char expr[100];
+ int top=-1;
+ void reversee()
+ {
+ int i=0;
+ int len=strlen(expr1);
+ while(i<len)
+ {
+ if(expr1[len-1-i]=='(')
+ expr[i]=')';
+ else if(expr1[len-1-i]==')')
+ expr[i]='(';
+ else
+ expr[i]=expr1[len-1-i];
+ i++;
+ }
+ expr[i]='\0';
+ }
+ void reverse()
+ {
+ int i=0;
+ int len=strlen(postfix);
+ while(i<len)
+ {
+ prefix[i]=postfix[len-1-i];
+ i++;
+ }
+ prefix[i]='\0';
+ }
+ void push(char a)
+ {
+ stack[++top]=a;
+ }
+ char pop()
+ {
+return stack[top--];
+ }
+ int precedence(char a)
+ {
+ switch(a)
+ {
+ case('+'):
+ case('-'):
+ return 1;
+ case('*'):
+ case('/'):
+ return 3;
+ case('^'):
+ return 6;
+ }
+ return 0;
+ }
+ void infix_to_postfix()
+ {
+ char c;
+ int i=0,k=0;
+ while(expr[i])
+ {
+ if(isalnum(expr[i]))
+ {
+ postfix[k++]=expr[i];
+ }
+ else if(expr[i]=='(')
+ {
+ push(expr[i]);
+ }
+ else if(expr[i]==')')
+ {
+ while((c=pop())!='(')
+ {
+ postfix[k++]=c;
+ }
+ }
+ else if(expr[i]=='^')
+ {
+ push(expr[i]);
+ }
+ else
+ {
+ while(top!=-1 && precedence(stack[top]) >
+ precedence(expr[i]))
+ {
+ postfix[k++]=pop();
+}
+ push(expr[i]);
+ }
+ i++;
+ }
+ while(top!=-1)
+ {
+ postfix[k++]=pop();
+ }
+ postfix[k]='\0';
+ }
+ int main()
+ {
+ printf("enter expression:");
+ scanf("%s",expr1);
+ reversee();
+ infix_to_postfix();
+ reverse();
+ printf("prefix: %s\n", prefix);
+ return 0;
+ }
