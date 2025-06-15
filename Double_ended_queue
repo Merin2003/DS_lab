@@ -1,0 +1,158 @@
+#include <stdio.h>
+#define N 5
+int dq[N];
+int x;
+int f=-1;
+int r=-1;
+void front_enqueue(int x)
+{
+    if((f==0&&r==N-1)||(f==r+1))
+    printf("q full");
+    else
+    if(f==-1&&r==-1)
+    {
+        f=r=0;
+        dq[f]=x;
+        printf("inserted item: %d",x);
+    }
+    else
+    {
+        f--;
+        dq[f]=x;
+        printf("inserted item: %d",dq[f]);
+        
+    }
+}
+void rear_enqueue(int x)
+{
+    if((f==0&&r==N-1)||(f==r+1))
+    printf("q full");
+    else
+    if(f==-1&&r==-1)
+    {
+        f=r=0;
+        dq[r]=x;
+        printf("inserted item: %d",x);
+    }
+    else
+    if(r==N-1)
+    {
+        r=0;
+        dq[r]=x;
+         printf("inserted item: %d",x);
+        
+    }
+    else
+    {
+        r=r+1;
+        dq[r]=x;
+        printf("inserted item: %d",x);
+    }
+}
+void display()
+{
+    if(f==-1&&r==-1)
+    printf("Q empty");
+    else
+    {
+        int i=f;
+        while(i!=r)
+        {
+            printf("%d",dq[i]);
+            i=(i+1)%N;
+            
+        }
+        printf("%d",dq[i]);
+    }
+}
+void rear_deque()
+{
+     if(f==-1&&r==-1)
+    printf("Q empty");
+    else
+    if(f==r)
+    {
+        printf("Deleted item: %d",dq[r]);
+        f=r=-1;
+    }
+    else
+    {
+         printf("Deleted item: %d",dq[r]);
+         r--;
+    }
+    
+}
+void front_deque()
+{
+    if(f==-1&&r==-1)
+    printf("Q empty");
+    else
+    if(f==r)
+    {
+        printf("Deleted item: %d",dq[f]);
+        f=r=-1;
+    }
+    else
+    if(f==N-1)
+    {
+       printf("Deleted item: %d",dq[f]) ;
+       f=0;
+        
+    }
+    else
+    {
+      printf("Deleted item: %d",dq[f]) ;
+       f++;  
+    }
+}
+    
+
+int main()
+{
+    int x,n;
+    char ch;
+    printf(" 1-rearinsert \t 2-frontinsert\t 3-reardelete \t 4-frontdelete \t5-display\n");
+    do{
+        printf("enter your choice:");
+        scanf("%d",&n);
+        switch(n)
+        {
+            case 1:
+            {
+                printf("enter item:");
+                scanf("%d",&x);
+                 rear_enqueue(x) ;
+                 
+                 break;
+            }
+            case 2:
+            {
+                printf("enter item:");
+                scanf("%d",&x);
+                 front_enqueue(x) ;
+                 
+                 break;
+            }
+             case 3:
+            {
+                rear_deque();
+                break;
+            }
+            case 4:
+            {
+                front_deque();
+                break;
+            }
+            case 5:
+            {
+               display();
+                 break;
+            }
+        }
+        printf("\n do you want to continue?\n");
+        scanf(" %c",&ch);
+    }while(ch=='y');
+   
+
+    return 0;
+}
