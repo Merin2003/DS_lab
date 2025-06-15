@@ -1,0 +1,106 @@
+#include <stdio.h>
+#define N 3
+#define maxp 3
+
+int f[maxp] = {-1, -1, -1};
+int r[maxp] = {-1, -1, -1};
+int pq[maxp][N]; 
+
+void enqueue(int x, int p) 
+{
+    if (p < 0 || p >= maxp) 
+    {
+        printf("Invalid priority level!\n");
+        return;
+    }
+    if (r[p] == N - 1) 
+    {
+        printf("Queue full at priority %d\n", p + 1);
+    } 
+    else 
+    {
+        r[p]++;
+        pq[p][r[p]] = x;
+        if (f[p] == -1)
+            f[p] = 0;
+        printf("Inserted item: %d at priority %d\n", x, p + 1);
+    }
+}
+
+void dequeue() 
+{
+    int p;
+    for (p = 0; p < maxp; p++) 
+    {
+        if (f[p] != -1 && f[p] <= r[p]) 
+        {
+            int x = pq[p][f[p]];
+            printf("Deleted item: %d from priority %d\n", x, p + 1);
+            f[p]++;
+            if (f[p] > r[p]) 
+            {
+                f[p] = r[p] = -1;
+            }
+            return; 
+        }
+    }
+    printf("All queues are empty!\n");
+}
+
+void display() 
+{
+    for (int i = 0; i < maxp; i++) 
+    {
+        printf("\nPriority level %d: ", i + 1);
+        if (f[i] == -1)
+            printf("Queue empty");
+        else 
+        {
+            for (int j = f[i]; j <= r[i]; j++) 
+            {
+                printf("%d ", pq[i][j]);
+            }
+        }
+    }
+    printf("\n");
+}
+
+int main()
+{
+    int x, n, p;
+    char ch;
+    printf("1 - Insert\n2 - Delete\n3 - Display\n");
+
+    do 
+    {
+        printf("\nEnter your choice: ");
+        scanf("%d", &n);
+
+        switch (n) 
+        {
+            case 1:
+                printf("Enter item: ");
+                scanf("%d", &x);
+                printf("Enter priority level (1-%d): ", maxp);
+                scanf("%d", &p);
+                enqueue(x, p - 1); 
+                break;
+
+            case 2:
+                dequeue();
+                break;
+
+            case 3:
+                display();
+                break;
+
+            default:
+                printf("Invalid choice!\n");
+        }
+
+        printf("Do you want to continue? (y/n): ");
+        scanf(" %c", &ch); 
+    } while (ch == 'y' || ch == 'Y');
+
+    return 0;
+}
